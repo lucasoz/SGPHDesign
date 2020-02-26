@@ -1,90 +1,65 @@
 // SEBAS este componente es https://ant.design/components/layout/ pero usa el sider
 import React from "react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Breadcrumb, Icon, Modal, Button } from "antd";
 import ListaNoticias from "../noticias/ListaNoticias";
+import CrearQueja from "../modal-form-queja/CrearQueja";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 class SiderContainer extends React.Component {
   state = {
-    collapsed: true
+    modalQueja: false,
   };
 
-  onCollapse = collapsed => {
-    this.setState({ collapsed });
-  };
+  setModalVisible = (modalQueja) => {
+    this.setState({ modalQueja });
+  }
+
+  onClickMenu = ({ key })=>{
+    switch (key) {
+      case 'queja':
+        this.setState({ modalQueja: true });
+        break;
+    }
+  }
 
   render() {
     return (
-      <Layout
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0
-        }}
-      >
-        <Sider
-          collapsible
-          collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
-        >
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-            <Menu.Item key="1">
-              <Icon type="pie-chart" />
-              <span>Option 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="desktop" />
-              <span>Option 2</span>
-            </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  <span>User</span>
-                </span>
-              }
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={
-                <span>
-                  <Icon type="team" />
-                  <span>Team</span>
-                </span>
-              }
-            >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }} />
-          <Content style={{ margin: "0 16px" }}>
-            <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
+          <Header style={{
+            position: "fixed",
+            overflow: "hidden",
+            zIndex: '1',
+            width: "100%"
+          }}>
+            <Menu
+              onClick={this.onClickMenu}
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={['1']}
+              style={{ lineHeight: '64px' }}
+            >
+              <Menu.Item key="HOME">
+                <Icon type="home" /> SGPH
+              </Menu.Item>
+              <Menu.Item key="queja">
+                <Icon type="plus-circle" /> Queja
+              </Menu.Item>
+              <Menu.Item key="listar-quejas">
+                <Icon type="warning" /> Listar Quejas
+              </Menu.Item>
+              <Menu.Item key="4">nav 4</Menu.Item>
+            </Menu>
+          </Header>
+          <Content style={{ padding: '10px 50px', marginTop: 64 }}>
+            <CrearQueja modalQueja={this.state.modalQueja} setModalVisible={this.setModalVisible} />
             <ListaNoticias />
           </Content>
           <Footer style={{ textAlign: "center" }}>
             Ant Design ©2018 Created by Ant UED
           </Footer>
         </Layout>
-      </Layout>
     );
   }
 }
