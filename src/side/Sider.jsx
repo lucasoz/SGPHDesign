@@ -1,7 +1,7 @@
 // SEBAS este componente es https://ant.design/components/layout/ pero usa el sider
 import React from "react";
 import { Layout, Menu, Breadcrumb, Icon } from "antd";
-import ListaQuejas from "../quejas/ListaQuejas";
+import ListaNoticias from "../noticias/ListaNoticias";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -17,7 +17,14 @@ class SiderContainer extends React.Component {
 
   render() {
     return (
-      <Layout style={{ minHeight: "100vh", position: "absolute" }}>
+      <Layout
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0
+        }}
+      >
         <Sider
           collapsible
           collapsed={this.state.collapsed}
@@ -71,7 +78,7 @@ class SiderContainer extends React.Component {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <ListaQuejas />
+            <ListaNoticias />
           </Content>
           <Footer style={{ textAlign: "center" }}>
             Ant Design ©2018 Created by Ant UED

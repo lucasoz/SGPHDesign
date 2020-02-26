@@ -1,5 +1,6 @@
 import React from "react";
-import { List, Card } from "antd";
+import { List } from "antd";
+import CardNoticia from "../card-noticia/CardNoticia";
 
 const data = [
   {
@@ -94,7 +95,7 @@ const data = [
   }
 ];
 
-const ListaQuejas = () => (
+const ListaNoticias = () => (
   <List
     grid={{
       gutter: 16,
@@ -108,10 +109,10 @@ const ListaQuejas = () => (
     dataSource={data}
     renderItem={item => (
       <List.Item>
-        <Card title={item.title}>Card content</Card>
+        <CardNoticia />
       </List.Item>
     )}
   />
 );
 
-export default ListaQuejas;
+export default ListaNoticias;
