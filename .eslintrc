@@ -1,0 +1,14 @@
+{
+  "extends": ["airbnb", "airbnb/hooks"],
+  "globals": {
+    "fetch": false
+  },
+  "rules": {
+    "react/jsx-filename-extension": [0],
+    "no-unused-expressions": ["error", { "allowShortCircuit": true }]
+  },
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  }
+}
