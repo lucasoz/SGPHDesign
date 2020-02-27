@@ -34,6 +34,7 @@ class Quejas extends React.Component {
     return (
       <div>
         <List
+          loading={loading}
           grid={{
             gutter: 16,
             xs: 1,

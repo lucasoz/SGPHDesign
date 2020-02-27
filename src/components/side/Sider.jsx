@@ -30,7 +30,7 @@ class SiderContainer extends React.Component {
   render() {
     const { history } = this.props;
     return (
-      <Layout>
+      <Layout style={{height: "100%"}}>
         <Header style={{
           position: 'fixed',
           overflow: 'hidden',
@@ -63,16 +63,13 @@ class SiderContainer extends React.Component {
             <Menu.Item key="4">nav 4</Menu.Item>
           </Menu>
         </Header>
-        <Content style={{ padding: '10px 10px', marginTop: 64 }}>
+        <Content style={{ padding: '10px 10px', marginTop: 64, height: '100%' }}>
           <CrearQueja modalQueja={this.state.modalQueja} setModalVisible={this.setModalVisible} />
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
             <Route exact path="/quejas" component={Quejas} />
           </Switch>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Seminario de Proyectos en ingeniería 2020
-        </Footer>
       </Layout>
     );
   }
