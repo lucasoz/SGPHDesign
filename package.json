@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "react-dom": "latest",
-    "react": "latest",
+    "antd": "latest",
     "moment": "latest",
-    "antd": "latest"
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   },
   "keywords": [],
   "name": "antd-reproduction-template",
