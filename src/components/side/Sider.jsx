@@ -1,7 +1,7 @@
 // SEBAS este componente es https://ant.design/components/layout/ pero usa el sider
 import React from "react";
-import { Switch, Route, Redirectm, Link } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb, Icon, Modal, Button } from "antd";
+import { Switch, Route } from 'react-router-dom';
+import { Layout, Menu, Icon } from "antd";
 import { withRouter } from 'react-router-dom';
 import ListaNoticias from "../noticias/ListaNoticias";
 import CrearQueja from "../modal-form-queja/CrearQueja";
@@ -21,6 +21,8 @@ class SiderContainer extends React.Component {
     switch (key) {
       case 'queja':
         this.setState({ modalQueja: true });
+        break;
+      default:
         break;
     }
   }

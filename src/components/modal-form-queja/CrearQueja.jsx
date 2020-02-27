@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox, Modal, Select, DatePicker } from 'antd';
+import { Form, Icon, Input, Button, Modal, Select, DatePicker } from 'antd';
 import { firestore } from '../../firebase/firebase.utils.js'
 
 class CrearQueja extends React.Component {

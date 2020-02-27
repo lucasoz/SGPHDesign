@@ -1,9 +1,7 @@
 // se saco de card
 
 import React from "react";
-import { Skeleton, Switch, Tag, Card, Icon, Badge, Avatar } from "antd";
-
-const { Meta } = Card;
+import { Skeleton, Tag, Card, Icon } from "antd";
 
 const CardNoticia = ({ loading }) => (
   <Card
