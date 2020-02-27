@@ -1,6 +1,6 @@
-import React from "react";
-import { List } from "antd";
-import CardNoticia from "../card-noticia/CardNoticia";
+import React from 'react';
+import { List } from 'antd';
+import CardNoticia from '../card-noticia/CardNoticia';
 
 const data = [
   {
