@@ -1,24 +1,42 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox, Modal, Select, DatePicker } from 'antd';
+import { firestore } from '../../firebase/firebase.utils.js'
 
 class CrearQueja extends React.Component {
   state = {
     loading: false,
   };
 
-  handleSubmit = e => {
+  closeModal = () => {
+    this.props.form.resetFields();
+    this.props.setModalVisible(false);
+  }
+  
+
+  handleSubmit = async (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.setState({ loading: true });
+    const { apto, titulo, descripcion, timePiker: { _d } } = this.props.form.getFieldsValue();
+
+    await this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        await firestore.collection('quejas').add({
+          apto,
+          titulo,
+          descripcion,
+          fecha: _d,
+        });
+        this.closeModal();
       }
     });
+    this.setState({ loading: false });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { modalQueja, setModalVisible } = this.props;
+    const { modalQueja } = this.props;
     const { loading } = this.state;
+
     return (
       <Modal
         title="Realizar una queja"
@@ -26,9 +44,9 @@ class CrearQueja extends React.Component {
         okText="Crear"
         cancelText="Cancelar"
         visible={modalQueja}
-        onCancel={() => setModalVisible(false)}
+        onCancel={this.closeModal}
         footer={[
-          <Button key="back" onClick={() => setModalVisible(false)}>
+          <Button key="back" onClick={this.closeModal}>
             Cancelar
           </Button>,
           <Button key="submit" type="primary" loading={loading} onClick={this.handleSubmit}>
@@ -82,7 +100,7 @@ class CrearQueja extends React.Component {
           )}
         </Form.Item>
         <Form.Item label="Fecha">
-          {getFieldDecorator('time-picker', {
+          {getFieldDecorator('timePiker', {
             rules: [{ required: true, message: 'Fecha en la que sucedió el hecho' }],
           })(<DatePicker placeholder="Fecha" style={{width: "100%"}}/>)}
         </Form.Item>

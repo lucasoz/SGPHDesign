@@ -52,7 +52,7 @@ class SiderContainer extends React.Component {
               <Menu.Item key="4">nav 4</Menu.Item>
             </Menu>
           </Header>
-          <Content style={{ padding: '10px 50px', marginTop: 64 }}>
+          <Content style={{ padding: '10px 10px', marginTop: 64 }}>
             <CrearQueja modalQueja={this.state.modalQueja} setModalVisible={this.setModalVisible} />
             <ListaNoticias />
           </Content>
