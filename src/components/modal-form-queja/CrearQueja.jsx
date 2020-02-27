@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Modal, Select, DatePicker } from 'antd';
 import { firestore } from '../../firebase/firebase.utils.js'
-
+import { notiSuccess, notiError } from '../../utils/notifications';
+import './CrearQuejas.styles.css';
 class CrearQueja extends React.Component {
   state = {
     loading: false,
@@ -15,16 +16,20 @@ class CrearQueja extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         const { apto, titulo, descripcion, timePiker: { _d } } = this.props.form.getFieldsValue();
-        await firestore.collection('quejas').add({
-          apto,
-          titulo,
-          descripcion,
-          fecha: _d,
-        });
+        try {
+          await firestore.collection('quejas').add({
+            apto,
+            titulo,
+            descripcion,
+            fecha: _d,
+          });
+          notiSuccess("La queja ha sido reportada.");
+        } catch (error) {
+          notiError("Ha ocurrido un error al reportar la queja.");
+        }
         this.closeModal();
       }
       this.setState({ loading: false });
