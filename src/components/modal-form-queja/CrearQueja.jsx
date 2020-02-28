@@ -54,7 +54,7 @@ class CrearQueja extends React.Component {
         const { apto, titulo, descripcion, timePiker: { _d } } = this.props.form.getFieldsValue();
         try {
           await firestore.collection('quejas').add({
-            apto,
+            apto: firestore.collection('propiedades').doc(apto),
             titulo,
             descripcion,
             fecha: _d,
