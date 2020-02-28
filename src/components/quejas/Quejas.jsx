@@ -2,6 +2,7 @@ import React from 'react';
 import { firestore } from '../../firebase/firebase.utils';
 import { List } from 'antd';
 import _ from 'lodash';
+import CardQueja from '../card-queja/CardQueja';
 
 class Quejas extends React.Component {
   constructor(props) {
@@ -44,9 +45,9 @@ class Quejas extends React.Component {
             xxl: 3,
           }}
           dataSource={_.toArray(quejas)}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item>
-              {item.id}
+              <CardQueja queja={item} />
             </List.Item>
           )}
         />

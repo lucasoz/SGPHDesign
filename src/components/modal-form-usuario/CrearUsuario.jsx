@@ -1,8 +1,8 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Modal, Select, DatePicker } from 'antd';
-import { firestore } from '../../firebase/firebase.utils.js'
+import { Form, Input, Button, Modal, Select, DatePicker } from 'antd';
+import { firestore } from '../../firebase/firebase.utils';
 import { notiSuccess, notiError } from '../../utils/notifications';
-
+import { CreditCardOutlined, BoldOutlined, EditOutlined } from '@ant-design/icons';
 class CrearUsuario extends React.Component {
   state = {
     loading: false,
@@ -50,10 +50,10 @@ class CrearUsuario extends React.Component {
         visible={modalUsuario}
         onCancel={this.closeModal}
         footer={[
-          <Button key="back" onClick={this.closeModal}>
+          <Button key="back" size="large" onClick={this.closeModal}>
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" loading={loading} onClick={this.handleSubmit}>
+          <Button key="submit" size="large" type="primary" loading={loading} onClick={this.handleSubmit}>
             Crear
           </Button>,
         ]}
@@ -64,7 +64,7 @@ class CrearUsuario extends React.Component {
               rules: [{ required: true, message: 'Ingresa un nombre!' }],
             })(
               <Input
-                prefix={<Icon type="bold" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={<BoldOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Nombre"
               />,
             )}
@@ -74,7 +74,7 @@ class CrearUsuario extends React.Component {
               rules: [{ required: true, message: 'Ingresa un apellido!' }],
             })(
               <Input
-                prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={<EditOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Apellido"
               />,
             )}
@@ -85,7 +85,7 @@ class CrearUsuario extends React.Component {
             })(
               <Input
                 type="number"
-                prefix={<Icon type="credit-card" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={<CreditCardOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Cedula"
               />,
             )}
@@ -101,4 +101,4 @@ class CrearUsuario extends React.Component {
   };
 };
 
-export default Form.create({ name: 'usuario_form' })(CrearUsuario);
+export default CrearUsuario;

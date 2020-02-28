@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Skeleton, Tag, Card, Icon } from "antd";
+import { LikeOutlined, CommentOutlined, DislikeOutlined } from '@ant-design/icons';
 
 const CardNoticia = ({ loading }) => (
   <Card
@@ -16,15 +17,15 @@ const CardNoticia = ({ loading }) => (
     actions={[
       <div>
         <Tag>12</Tag>
-        <Icon type="like" key="like" />
+        <LikeOutlined key="like" />
       </div>,
       <div>
         <Tag>12</Tag>
-        <Icon type="message" key="message" />
+        <CommentOutlined key="message" />
       </div>,
       <div>
         <Tag>12</Tag>
-        <Icon type="dislike" key="dislike" />
+        <DislikeOutlined key="dislike" />
       </div>,
     ]}
   >

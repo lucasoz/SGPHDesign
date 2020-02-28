@@ -1,24 +1,25 @@
 import React from 'react';
-import { notification, Icon } from 'antd';
+import { notification } from 'antd';
+import { CloseOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 export const notiSuccess = (description) => (
   notification.error({
-    closeIcon: <Icon type="close" style={{color: "white" }} />,
+    closeIcon: <CloseOutlined style={{ color: 'white' }} />,
     className: 'successNoti',
     description,
-    icon: <Icon type="check-circle" style={{color: "white"}} />,
-    message: <span style={{ color: 'white' }} >Correcto!</span>,
+    icon: <CheckCircleOutlined style={{ color: 'white' }} />,
+    message: <span style={{ color: 'white' }}>Correcto!</span>,
     placement: 'bottomLeft',
   })
 );
 
 export const notiError = (description) => (
   notification.error({
-    message: <span style={{ color: 'white' }} >Error!</span>,
+    message: <span style={{ color: 'white' }}>Error!</span>,
     description,
     placement: 'bottomLeft',
     className: 'errorNoti',
-    icon: <Icon type="close-circle" style={{color: "white"}} />,
-    closeIcon: <Icon type="close" style={{color: "white"}} />,
+    icon: <CloseCircleOutlined style={{ color: 'white' }} />,
+    closeIcon: <CloseOutlined style={{ color: 'white' }} />,
   })
 );

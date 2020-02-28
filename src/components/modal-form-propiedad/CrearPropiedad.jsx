@@ -1,13 +1,12 @@
 import React from 'react';
 import {
   Form,
-  Icon,
   Input,
   Button,
   Modal,
   Select,
-  DatePicker,
 } from 'antd';
+import { NumberOutlined, UserOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import { notiSuccess, notiError } from '../../utils/notifications';
 import { firestore } from '../../firebase/firebase.utils';
@@ -97,7 +96,7 @@ class CrearPropiedad extends React.Component {
             })(
               <Input
                 type="number"
-                prefix={<Icon type="number" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={<NumberOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Apartameto"
               />,
             )}
@@ -107,7 +106,7 @@ class CrearPropiedad extends React.Component {
               rules: [{ required: true, message: 'Por favor selecciona un Usuario!' }],
             })(
               <Select
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Habitante"
                 showSearch
                 optionFilterProp="children"
@@ -129,4 +128,4 @@ class CrearPropiedad extends React.Component {
   }
 }
 
-export default Form.create({ name: 'propiedad_form' })(CrearPropiedad);
+export default CrearPropiedad;
