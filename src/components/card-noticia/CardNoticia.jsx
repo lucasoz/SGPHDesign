@@ -1,7 +1,7 @@
 // se saco de card
 
-import React from "react";
-import { Skeleton, Tag, Card, Icon } from "antd";
+import React from 'react';
+import { Skeleton, Tag, Card } from 'antd';
 import { LikeOutlined, CommentOutlined, DislikeOutlined } from '@ant-design/icons';
 
 const CardNoticia = ({ loading }) => (
