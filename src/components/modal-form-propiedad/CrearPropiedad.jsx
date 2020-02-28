@@ -88,10 +88,10 @@ class CrearPropiedad extends React.Component {
         onCancel={this.closeModal}
         onOk={this.validate}
         footer={[
-          <Button key="back" onClick={this.closeModal}>
+          <Button key="back" size="large" onClick={this.closeModal}>
             Cancelar
           </Button>,
-          <Button key="submit" type="primary" loading={loading} onClick={this.validate}>
+          <Button key="submit" size="large" type="primary" loading={loading} onClick={this.validate}>
             Crear
           </Button>,
         ]}

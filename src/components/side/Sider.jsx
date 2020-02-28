@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import ListaNoticias from '../noticias/ListaNoticias';
 import CrearQueja from '../modal-form-queja/CrearQueja';
-// import CrearUsuario from '../modal-form-usuario/CrearUsuario';
+import CrearUsuario from '../modal-form-usuario/CrearUsuario';
 import CrearPropiedad from '../modal-form-propiedad/CrearPropiedad';
 import Quejas from '../quejas/Quejas';
 
@@ -94,10 +94,11 @@ class SiderContainer extends React.Component {
         </Header>
         <Content style={{ padding: '10px 10px', marginTop: 64 }}>
           <CrearQueja modalQueja={this.state.queja} setModalVisible={this.setModalVisible} />
-          <CrearPropiedad modalPropiedad={this.state.propiedad} setModalVisible={this.setModalVisible} />
-          {
-          //   <CrearUsuario modalUsuario={this.state.usuario} setModalVisible={this.setModalVisible} />
-          }
+          <CrearPropiedad
+            modalPropiedad={this.state.propiedad}
+            setModalVisible={this.setModalVisible}
+          />
+          <CrearUsuario modalUsuario={this.state.usuario} setModalVisible={this.setModalVisible} />
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
             <Route exact path="/quejas" component={Quejas} />
