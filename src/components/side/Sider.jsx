@@ -1,14 +1,24 @@
 // SEBAS este componente es https://ant.design/components/layout/ pero usa el sider
 import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import { Layout, Menu, Icon } from 'antd';
+import {
+  Layout,
+  Menu,
+} from 'antd';
+import {
+  HomeOutlined,
+  PlusCircleOutlined,
+  WarningOutlined,
+  UserOutlined,
+  BuildOutlined,
+} from '@ant-design/icons';
 import ListaNoticias from '../noticias/ListaNoticias';
 import CrearQueja from '../modal-form-queja/CrearQueja';
 import CrearUsuario from '../modal-form-usuario/CrearUsuario';
 import CrearPropiedad from '../modal-form-propiedad/CrearPropiedad';
 import Quejas from '../quejas/Quejas';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 class SiderContainer extends React.Component {
   state = {
@@ -56,27 +66,27 @@ class SiderContainer extends React.Component {
             style={{ lineHeight: '64px' }}
           >
             <Menu.Item key="home" onClick={() => history.push('/')}>
-              <Icon type="home" />
+              <HomeOutlined />
               {' '}
               SGPH
             </Menu.Item>
             <Menu.Item key="queja">
-              <Icon type="plus-circle" />
+              <PlusCircleOutlined />
               {' '}
               Queja
             </Menu.Item>
             <Menu.Item key="listar-quejas" onClick={() => history.push('/quejas')}>
-              <Icon type="warning" />
+              <WarningOutlined />
               {' '}
               Listar Quejas
             </Menu.Item>
             <Menu.Item key="crearUsuario">
-              <Icon type="user" />
+              <UserOutlined />
               {' '}
               Crear Usuario
             </Menu.Item>
             <Menu.Item key="crearPropiedad">
-              <Icon type="build" />
+              <BuildOutlined />
               {' '}
               Crear Propiedad
             </Menu.Item>
@@ -84,8 +94,11 @@ class SiderContainer extends React.Component {
         </Header>
         <Content style={{ padding: '10px 10px', marginTop: 64 }}>
           <CrearQueja modalQueja={this.state.queja} setModalVisible={this.setModalVisible} />
+          <CrearPropiedad
+            modalPropiedad={this.state.propiedad}
+            setModalVisible={this.setModalVisible}
+          />
           <CrearUsuario modalUsuario={this.state.usuario} setModalVisible={this.setModalVisible} />
-          <CrearPropiedad modalPropiedad={this.state.propiedad} setModalVisible={this.setModalVisible} />
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
             <Route exact path="/quejas" component={Quejas} />
