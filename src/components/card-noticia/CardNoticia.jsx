@@ -5,6 +5,14 @@ import { Skeleton, Tag, Card, Icon } from "antd";
 
 const CardNoticia = ({ loading }) => (
   <Card
+    cover={<img
+      src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+      style={{
+        width: "100%",
+        height: "auto"
+      }}
+      alt="noticia"
+    />}
     actions={[
       <div>
         <Tag>12</Tag>
@@ -21,24 +29,7 @@ const CardNoticia = ({ loading }) => (
     ]}
   >
     <Skeleton loading={loading} avatar active />
-    <img
-      src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
-      style={{
-        width: "100%",
-        height: "auto"
-      }}
-      alt="noticia"
-    />
-    <div
-      style={{
-        padding: 10,
-        background: "rgba(0, 0, 0, 0.05)",
-        border: "1px rgba(0, 0, 0, 0.1) solid",
-        marginTop: 10
-      }}
-    >
-      content
-    </div>
+    Texto de prueba
   </Card>
 );
 

@@ -1,3 +1,13 @@
-.App {
-  padding: 20px;
+* {
+  font-family: 'Basic';
+}
+
+.successNoti {
+  background-color: #28a745;
+  color: white;
+}
+
+.errorNoti {
+  background-color: #ff4444;
+  color: white;
 }

@@ -1,25 +1,36 @@
 // SEBAS este componente es https://ant.design/components/layout/ pero usa el sider
-import React from "react";
+import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import { Layout, Menu, Icon } from "antd";
-import ListaNoticias from "../noticias/ListaNoticias";
-import CrearQueja from "../modal-form-queja/CrearQueja";
+import { Layout, Menu, Icon } from 'antd';
+import ListaNoticias from '../noticias/ListaNoticias';
+import CrearQueja from '../modal-form-queja/CrearQueja';
+import CrearUsuario from '../modal-form-usuario/CrearUsuario';
+import CrearPropiedad from '../modal-form-propiedad/CrearPropiedad';
+import Quejas from '../quejas/Quejas';
 
-const { Header, Content, Footer} = Layout;
+const { Header, Content, Footer } = Layout;
 
 class SiderContainer extends React.Component {
   state = {
-    modalQueja: false,
+    queja: false,
+    usuario: false,
+    propiedad: false,
   };
 
-  setModalVisible = (modalQueja) => {
-    this.setState({ modalQueja });
+  setModalVisible = (modal, type) => {
+    this.setState({ [type]: modal });
   }
 
-  onClickMenu = ({ key })=>{
+  onClickMenu = ({ key }) => {
     switch (key) {
       case 'queja':
-        this.setState({ modalQueja: true });
+        this.setState({ queja: true });
+        break;
+      case 'crearUsuario':
+        this.setState({ usuario: true });
+        break;
+      case 'crearPropiedad':
+        this.setState({ propiedad: true });
         break;
       default:
         break;
@@ -29,13 +40,14 @@ class SiderContainer extends React.Component {
   render() {
     const { history } = this.props;
     return (
-      <Layout>
+      <Layout style={{height: "100%"}}>
         <Header style={{
-          position: "fixed",
-          overflow: "hidden",
+          position: 'fixed',
+          overflow: 'hidden',
           zIndex: '1',
-          width: "100%"
-        }}>
+          width: '100%',
+        }}
+        >
           <Menu
             onClick={this.onClickMenu}
             theme="dark"
@@ -43,28 +55,42 @@ class SiderContainer extends React.Component {
             defaultSelectedKeys={['1']}
             style={{ lineHeight: '64px' }}
           >
-            <Menu.Item key="home" onClick={()=>history.push("/")}>
-              <Icon type="home" /> SGPH
+            <Menu.Item key="home" onClick={() => history.push('/')}>
+              <Icon type="home" />
+              {' '}
+              SGPH
             </Menu.Item>
             <Menu.Item key="queja">
-              <Icon type="plus-circle" /> Queja
+              <Icon type="plus-circle" />
+              {' '}
+              Queja
             </Menu.Item>
-            <Menu.Item key="listar-quejas" onClick={()=>history.push("/quejas")}>
-              <Icon type="warning" /> Listar Quejas
+            <Menu.Item key="listar-quejas" onClick={() => history.push('/quejas')}>
+              <Icon type="warning" />
+              {' '}
+              Listar Quejas
             </Menu.Item>
-            <Menu.Item key="4">nav 4</Menu.Item>
+            <Menu.Item key="crearUsuario">
+              <Icon type="user" />
+              {' '}
+              Crear Usuario
+            </Menu.Item>
+            <Menu.Item key="crearPropiedad">
+              <Icon type="build" />
+              {' '}
+              Crear Propiedad
+            </Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '10px 10px', marginTop: 64 }}>
-          <CrearQueja modalQueja={this.state.modalQueja} setModalVisible={this.setModalVisible} />
+          <CrearQueja modalQueja={this.state.queja} setModalVisible={this.setModalVisible} />
+          <CrearUsuario modalUsuario={this.state.usuario} setModalVisible={this.setModalVisible} />
+          <CrearPropiedad modalPropiedad={this.state.propiedad} setModalVisible={this.setModalVisible} />
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
-            <Route exact path="/quejas" component={null} />
+            <Route exact path="/quejas" component={Quejas} />
           </Switch>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
       </Layout>
     );
   }

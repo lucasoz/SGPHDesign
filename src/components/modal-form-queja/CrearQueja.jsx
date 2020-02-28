@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Icon, Input, Button, Modal, Select, DatePicker } from 'antd';
 import { firestore } from '../../firebase/firebase.utils.js'
 import { notiSuccess, notiError } from '../../utils/notifications';
-import './CrearQuejas.styles.css';
 class CrearQueja extends React.Component {
   state = {
     loading: false,
@@ -10,7 +9,7 @@ class CrearQueja extends React.Component {
 
   closeModal = () => {
     this.props.form.resetFields();
-    this.props.setModalVisible(false);
+    this.props.setModalVisible(false, 'queja');
   }
 
   handleSubmit = (e) => {
