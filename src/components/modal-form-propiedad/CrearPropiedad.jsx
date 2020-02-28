@@ -89,7 +89,11 @@ class CrearPropiedad extends React.Component {
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item label="Apartamento">
             {getFieldDecorator('apartamento', {
-              rules: [{ required: true, message: 'Ingresa el número del apartamento' }],
+              rules: [
+                { required: true, message: 'Ingresa el número del apartamento' },
+                { len: 4, message: 'Identificador de 4 dígitos' },
+                { max: 9999, message: 'Máximo 9999' },
+              ],
             })(
               <Input
                 type="number"

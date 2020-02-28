@@ -1,11 +1,45 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Modal, Select, DatePicker } from 'antd';
-import { firestore } from '../../firebase/firebase.utils.js'
+import {
+  Form,
+  Icon,
+  Input,
+  Button,
+  Modal,
+  Select,
+  DatePicker,
+} from 'antd';
+import _ from 'lodash';
 import { notiSuccess, notiError } from '../../utils/notifications';
+import { firestore } from '../../firebase/firebase.utils';
+
 class CrearQueja extends React.Component {
-  state = {
-    loading: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+      propiedades: {},
+      loading: false,
+    };
+  }
+
+  componentDidMount() {
+    this.getPropiedades();
+  }
+
+  getPropiedades = async () => {
+    firestore.collection('propiedades')
+      .onSnapshot(
+        (snapshot) => snapshot.forEach((propiedad) => {
+          this.setState((state) => ({
+            propiedades: {
+              ...state.propiedades,
+              [propiedad.id]: { ...propiedad.data(), id: propiedad.id },
+            },
+          }));
+        }),
+        (error) => notiError(error),
+      );
+    this.setState({ loading: false });
+  }
 
   closeModal = () => {
     this.props.form.resetFields();
@@ -71,14 +105,11 @@ class CrearQueja extends React.Component {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                <Select.Option value="1001">1001</Select.Option>
-                <Select.Option value="1002">1002</Select.Option>
-                <Select.Option value="1003">1003</Select.Option>
-                <Select.Option value="1004">1004</Select.Option>
-                <Select.Option value="2001">2001</Select.Option>
-                <Select.Option value="2002">2002</Select.Option>
-                <Select.Option value="2003">2003</Select.Option>
-                <Select.Option value="2004">2004</Select.Option>
+                {
+                  _.toArray(this.state.propiedades).map((propiedad) => (
+                    <Select.Option key={propiedad.id} value={propiedad.id}>{propiedad.apartamento}</Select.Option>
+                  ))
+                }
               </Select>,
             )}
           </Form.Item>
