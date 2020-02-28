@@ -97,18 +97,10 @@ const data = [
 
 const ListaNoticias = () => (
   <List
-    grid={{
-      gutter: 16,
-      xs: 1,
-      sm: 2,
-      md: 3,
-      lg: 4,
-      xl: 4,
-      xxl: 3
-    }}
+    style={{ textAlign: '-webkit-center' }}
     dataSource={data}
     renderItem={item => (
-      <List.Item>
+      <List.Item style={{ maxWidth: '500px' }}>
         <CardNoticia />
       </List.Item>
     )}
