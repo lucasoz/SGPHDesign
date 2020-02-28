@@ -4,23 +4,33 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 import ListaNoticias from '../noticias/ListaNoticias';
 import CrearQueja from '../modal-form-queja/CrearQueja';
+import CrearUsuario from '../modal-form-usuario/CrearUsuario';
+import CrearPropiedad from '../modal-form-propiedad/CrearPropiedad';
 import Quejas from '../quejas/Quejas';
 
 const { Header, Content, Footer } = Layout;
 
 class SiderContainer extends React.Component {
   state = {
-    modalQueja: false,
+    queja: false,
+    usuario: false,
+    propiedad: false,
   };
 
-  setModalVisible = (modalQueja) => {
-    this.setState({ modalQueja });
+  setModalVisible = (modal, type) => {
+    this.setState({ [type]: modal });
   }
 
   onClickMenu = ({ key }) => {
     switch (key) {
       case 'queja':
-        this.setState({ modalQueja: true });
+        this.setState({ queja: true });
+        break;
+      case 'crearUsuario':
+        this.setState({ usuario: true });
+        break;
+      case 'crearPropiedad':
+        this.setState({ propiedad: true });
         break;
       default:
         break;
@@ -60,11 +70,22 @@ class SiderContainer extends React.Component {
               {' '}
               Listar Quejas
             </Menu.Item>
-            <Menu.Item key="4">nav 4</Menu.Item>
+            <Menu.Item key="crearUsuario">
+              <Icon type="user" />
+              {' '}
+              Crear Usuario
+            </Menu.Item>
+            <Menu.Item key="crearPropiedad">
+              <Icon type="build" />
+              {' '}
+              Crear Propiedad
+            </Menu.Item>
           </Menu>
         </Header>
-        <Content style={{ padding: '10px 10px', marginTop: 64, height: '100%' }}>
-          <CrearQueja modalQueja={this.state.modalQueja} setModalVisible={this.setModalVisible} />
+        <Content style={{ padding: '10px 10px', marginTop: 64 }}>
+          <CrearQueja modalQueja={this.state.queja} setModalVisible={this.setModalVisible} />
+          <CrearUsuario modalUsuario={this.state.usuario} setModalVisible={this.setModalVisible} />
+          <CrearPropiedad modalPropiedad={this.state.propiedad} setModalVisible={this.setModalVisible} />
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
             <Route exact path="/quejas" component={Quejas} />

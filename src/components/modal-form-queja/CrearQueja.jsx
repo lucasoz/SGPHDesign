@@ -9,7 +9,7 @@ class CrearQueja extends React.Component {
 
   closeModal = () => {
     this.props.form.resetFields();
-    this.props.setModalVisible(false);
+    this.props.setModalVisible(false, 'queja');
   }
 
   handleSubmit = (e) => {
