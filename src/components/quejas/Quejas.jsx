@@ -29,8 +29,7 @@ class Quejas extends React.Component {
 
   render() {
     const { quejas, loading } = this.state;
-    console.log(quejas);
-    
+
     return (
       <div>
         <List
