@@ -1,8 +1,9 @@
 import React from 'react';
-import { firestore } from '../../firebase/firebase.utils';
 import { List } from 'antd';
 import _ from 'lodash';
 import CardQueja from '../card-queja/CardQueja';
+import { firestore } from '../../firebase/firebase.utils';
+import { notiError } from '../../utils/notifications';
 
 class Quejas extends React.Component {
   constructor(props) {
@@ -19,12 +20,15 @@ class Quejas extends React.Component {
   }
 
   getCollection = async () => {
-    const snapshot = await firestore.collection('quejas').get();
-    snapshot.forEach((queja) => {
-      this.setState((state) => ({
-        quejas: { ...state.quejas, [queja.id]: { ...queja.data(), id: queja.id } },
-      }));
-    });
+    firestore.collection('quejas').where('solucionado', '==', false)
+      .onSnapshot(
+        (snapshot) => snapshot.forEach((queja) => {
+          this.setState((state) => ({
+            quejas: { ...state.quejas, [queja.id]: { ...queja.data(), id: queja.id } },
+          }));
+        }),
+        (error) => notiError(error),
+      );
     this.setState({ loading: false });
   }
 

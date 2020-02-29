@@ -21,11 +21,14 @@ import Quejas from '../quejas/Quejas';
 const { Header, Content } = Layout;
 
 class SiderContainer extends React.Component {
-  state = {
-    queja: false,
-    usuario: false,
-    propiedad: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+      queja: false,
+      usuario: false,
+      propiedad: false,
+    };
+  }
 
   setModalVisible = (modal, type) => {
     this.setState({ [type]: modal });
@@ -48,9 +51,10 @@ class SiderContainer extends React.Component {
   }
 
   render() {
+    const { queja, propiedad, usuario } = this.state;
     const { history } = this.props;
     return (
-      <Layout style={{height: "100%"}}>
+      <Layout style={{ height: '100%' }}>
         <Header style={{
           position: 'fixed',
           overflow: 'hidden',
@@ -93,12 +97,12 @@ class SiderContainer extends React.Component {
           </Menu>
         </Header>
         <Content style={{ padding: '10px 10px', marginTop: 64 }}>
-          <CrearQueja modalQueja={this.state.queja} setModalVisible={this.setModalVisible} />
+          <CrearQueja modalQueja={queja} setModalVisible={this.setModalVisible} />
           <CrearPropiedad
-            modalPropiedad={this.state.propiedad}
+            modalPropiedad={propiedad}
             setModalVisible={this.setModalVisible}
           />
-          <CrearUsuario modalUsuario={this.state.usuario} setModalVisible={this.setModalVisible} />
+          <CrearUsuario modalUsuario={usuario} setModalVisible={this.setModalVisible} />
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
             <Route exact path="/quejas" component={Quejas} />
