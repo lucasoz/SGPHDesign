@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import {
   Form,
@@ -6,16 +7,22 @@ import {
   Modal,
   Select,
   DatePicker,
+  Upload,
+  message,
+  Divider,
+  Progress,
 } from 'antd';
 import {
   HomeOutlined,
   IssuesCloseOutlined,
   InfoCircleOutlined,
+  LoadingOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { notiSuccess, notiError } from '../../utils/notifications';
-import { firestore } from '../../firebase/firebase.utils';
+import { firestore, storage } from '../../firebase/firebase.utils';
 
 class CrearQueja extends React.Component {
   formRef = React.createRef()
@@ -25,11 +32,34 @@ class CrearQueja extends React.Component {
     this.state = {
       propiedades: {},
       loading: false,
+      loadingImage: false,
+      isLoadingImage: false,
     };
   }
 
   componentDidMount() {
     this.getPropiedades();
+  }
+
+  getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
+
+  beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('Sólo se admiten archivos JPG/PNG!');
+    }
+    const isLt10M = file.size / 10240 / 10240 < 10;
+    if (!isLt10M) {
+      message.error('Image sebe ser menor a 10MB!');
+    }
+    if (isJpgOrPng && isLt10M) {
+      this.setState({ extension: file.type === 'image/jpeg' ? 'jpeg' : 'png' });
+    }
+    return isJpgOrPng && isLt10M;
   }
 
   getPropiedades = async () => {
@@ -52,12 +82,35 @@ class CrearQueja extends React.Component {
     this.formRef.current.resetFields();
     const { setModalVisible } = this.props;
     setModalVisible(false, 'queja');
+    this.setState({ imageUrl: null });
   }
 
-  handleSubmit = async ({
+  handleSubmit = (data) => {
+    const { imageUrl, extension } = this.state;
+    this.setState({ loading: true, isLoadingImage: true });
+    const uploadTask = storage.child(`quejas/${Date.now()}.${extension}`).putString(imageUrl, 'data_url');
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        this.setState({ percent: Math.round(progress) });
+      },
+      (error) => {
+        notiError(error.message);
+      },
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          this.handleSubmitData({ ...data, downloadURL });
+        });
+      },
+    );
+  };
+
+  handleSubmitData = async ({
     apto,
     titulo,
     descripcion,
+    downloadURL,
     timePiker: { _d },
   }) => {
     this.setState({ loading: true });
@@ -67,13 +120,15 @@ class CrearQueja extends React.Component {
         titulo,
         descripcion,
         fecha: _d,
+        solucionado: false,
+        imagen: downloadURL,
       });
       notiSuccess('La queja ha sido reportada.');
     } catch (error) {
-      notiError('Ha ocurrido un error al reportar la queja.');
+      notiError(error.message);
     }
-    this.closeModal();
     this.setState({ loading: false });
+    this.closeModal();
   };
 
   validate = () => {
@@ -85,10 +140,37 @@ class CrearQueja extends React.Component {
       .catch(() => null);
   }
 
+  handleChange = (info) => {
+    if (info.file.status === 'uploading') {
+      this.setState({ loadingImage: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      this.getBase64(info.file.originFileObj, (imageUrl) => this.setState({
+        imageUrl,
+        loadingImage: false,
+      }));
+    }
+  };
+
   render() {
     const { modalQueja } = this.props;
-    const { loading, propiedades } = this.state;
+    const {
+      loading,
+      propiedades,
+      imageUrl,
+      loadingImage,
+      isLoadingImage,
+      percent,
+    } = this.state;
 
+    const uploadButton = (
+      <div>
+        {loadingImage ? <LoadingOutlined /> : <PlusOutlined />}
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
     return (
       <Modal
         title="Realizar una queja"
@@ -102,7 +184,7 @@ class CrearQueja extends React.Component {
           <Button key="back" size="large" onClick={this.closeModal}>
             Cancelar
           </Button>,
-          <Button key="submit" size="large" type="primary" loading={loading} onClick={this.validate}>
+          <Button key="submit" size="large" type="primary" disabled={loadingImage} loading={loading} onClick={this.validate}>
             Crear
           </Button>,
         ]}
@@ -165,6 +247,23 @@ class CrearQueja extends React.Component {
             rules={[{ required: true, message: 'Fecha en la que sucedió el hecho' }]}
           >
             <DatePicker placeholder="Fecha" style={{ width: '100%' }} />
+          </Form.Item>
+          <Divider dashed />
+          <Form.Item>
+            <Upload
+              name="avatar"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              beforeUpload={this.beforeUpload}
+              onChange={this.handleChange}
+            >
+              {imageUrl ? (isLoadingImage
+                ? <Progress type="circle" percent={percent} />
+                : <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+              ) : uploadButton}
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

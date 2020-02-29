@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import 'moment/locale/es';
+import { storage } from '../../firebase/firebase.utils';
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -23,15 +24,15 @@ const defState = {
 class CardNoticia extends React.Component {
   constructor() {
     super();
-    this.state = { ...defState, apartamento: null };
+    this.state = { ...defState, apartamento: null, imageUrl: null };
   }
 
   componentDidMount() {
-    const { queja: { apto } } = this.props;
-    this.getApto(apto);
+    const { queja } = this.props;
+    this.getAsyncData(queja);
   }
 
-  getApto = async (apto) => {
+  getAsyncData = async ({ apto }) => {
     const aptoSnapshot = await apto.get();
     const { apartamento } = aptoSnapshot.data();
     this.setState({ apartamento });
@@ -50,13 +51,14 @@ class CardNoticia extends React.Component {
   }
 
   render() {
-    const { queja: { id, titulo, descripcion, fecha, apto} } = this.props;
+    const { queja: { id, titulo, descripcion, fecha, apto, imagen } } = this.props;
     const { modalIsOpen, idQueja, apartamento } = this.state;
 
     return (
       <Card
         hoverable
         onClick={() => this.openModal(id)}
+        cover={<img alt="example" src={imagen} />}
       >
         <Meta
           avatar={(
