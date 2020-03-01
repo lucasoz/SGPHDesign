@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import 'moment/locale/es';
-import { storage } from '../../firebase/firebase.utils';
+import './CardQueja.styles.scss';
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -58,7 +58,11 @@ class CardQueja extends React.Component {
       <Card
         hoverable
         onClick={() => this.openModal(id)}
-        cover={<img alt="queja" src={imagen} />}
+        cover={(
+          <div className="square">
+            <img className="content" alt="queja" src={imagen} />
+          </div>
+        )}
       >
         <Meta
           avatar={(
