@@ -21,7 +21,7 @@ const defState = {
   modalIsOpen: false,
   loading: false,
 };
-class CardNoticia extends React.Component {
+class CardQueja extends React.Component {
   constructor() {
     super();
     this.state = { ...defState, apartamento: null, imageUrl: null };
@@ -58,7 +58,7 @@ class CardNoticia extends React.Component {
       <Card
         hoverable
         onClick={() => this.openModal(id)}
-        cover={<img alt="example" src={imagen} />}
+        cover={<img alt="queja" src={imagen} />}
       >
         <Meta
           avatar={(
@@ -81,4 +81,4 @@ class CardNoticia extends React.Component {
   }
 }
 
-export default CardNoticia;
+export default CardQueja;
