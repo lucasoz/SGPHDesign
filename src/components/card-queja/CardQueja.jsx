@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Divider,
   Card,
@@ -19,12 +20,11 @@ const { Text } = Typography;
 const defState = {
   idQueja: null,
   modalIsOpen: false,
-  loading: false,
 };
 class CardQueja extends React.Component {
   constructor() {
     super();
-    this.state = { ...defState, apartamento: null, imageUrl: null };
+    this.state = { ...defState, apartamento: null };
   }
 
   componentDidMount() {
@@ -38,26 +38,23 @@ class CardQueja extends React.Component {
     this.setState({ apartamento });
   }
 
-  openModal = (idQueja) => {
-    this.setState({ idQueja, modalIsOpen: true });
-  }
-
-  closeModal = () => {
-    this.setState((state) => ({ ...state, defState }));
-  }
-
-  handleSubmit = () => {
-
-  }
-
   render() {
-    const { queja: { id, titulo, descripcion, fecha, apto, imagen } } = this.props;
-    const { modalIsOpen, idQueja, apartamento } = this.state;
+    const {
+      queja: {
+        titulo,
+        descripcion,
+        fecha,
+        imagen,
+      },
+      openModal,
+      queja,
+    } = this.props;
+    const { apartamento } = this.state;
 
     return (
       <Card
         hoverable
-        onClick={() => this.openModal(id)}
+        onClick={() => openModal({ ...queja, apartamento })}
         cover={(
           <div className="square">
             <img className="content" alt="queja" src={imagen} />
@@ -84,5 +81,18 @@ class CardQueja extends React.Component {
     );
   }
 }
+
+CardQueja.propTypes = {
+  queja: PropTypes.shape({
+    titulo: PropTypes.string.isRequired,
+    descripcion: PropTypes.string.isRequired,
+    fecha: PropTypes.shape({
+      seconds: PropTypes.number.isRequired,
+      nanoseconds: PropTypes.number.isRequired,
+    }).isRequired,
+    imagen: PropTypes.string.isRequired,
+  }).isRequired,
+  openModal: PropTypes.func.isRequired,
+};
 
 export default CardQueja;
