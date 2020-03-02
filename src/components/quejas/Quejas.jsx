@@ -47,6 +47,17 @@ class Quejas extends React.Component {
     this.setState((state) => ({ ...state, ...defState }));
   }
 
+  solucionarQueja = (id) => {
+    this.setState((state) => {
+      const queja = state.quejas[id];
+      return (
+        {
+          quejas: { ...state.quejas, [id]: { ...queja, solucionado: true } },
+        }
+      );
+    });
+  }
+
   render() {
     const {
       quejas,
@@ -68,14 +79,19 @@ class Quejas extends React.Component {
             xl: 4,
             xxl: 5,
           }}
-          dataSource={_.toArray(quejas)}
+          dataSource={_.toArray(_.filter(quejas, { solucionado: false }))}
           renderItem={(item) => (
             <List.Item>
               <CardQueja queja={item} openModal={this.openModal} />
             </List.Item>
           )}
         />
-        <ModalSolucion modalIsOpen={modalIsOpen} closeModal={this.closeModal} queja={queja} />
+        <ModalSolucion
+          modalIsOpen={modalIsOpen}
+          closeModal={this.closeModal}
+          queja={queja}
+          solucionarQueja={this.solucionarQueja}
+        />
       </div>
     );
   }

@@ -62,7 +62,7 @@ class ModalSolucion extends React.Component {
     fechaPenalizacion,
   }) => {
     this.setState({ loading: true });
-    const { queja: { id } } = this.props;
+    const { queja: { id }, solucionarQueja } = this.props;
     const queja = firestore.collection('quejas').doc(id);
     const { _d: fechaHoy } = moment();
     try {
@@ -83,6 +83,7 @@ class ModalSolucion extends React.Component {
       await queja.update({
         solucionado: true,
       });
+      solucionarQueja(id);
       notiSuccess('La queja ha sido solucionada.');
     } catch (error) {
       notiError(error.message);
