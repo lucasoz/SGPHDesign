@@ -6,30 +6,20 @@ import {
   Button,
   Modal,
   Switch,
-  Select,
   DatePicker,
-  Upload,
-  message,
   Spin,
   Typography,
   Divider,
-  Progress,
   Card,
 } from 'antd';
 import {
-  HomeOutlined,
   DollarCircleOutlined,
-  IssuesCloseOutlined,
-  NumberOutlined,
-  InfoCircleOutlined,
   CalendarOutlined,
   LoadingOutlined,
-  PlusOutlined,
   WarningTwoTone,
 } from '@ant-design/icons';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { notiSuccess, notiError } from '../../utils/notifications';
 import { firestore } from '../../firebase/firebase.utils';
 
@@ -107,15 +97,12 @@ class ModalSolucion extends React.Component {
   render() {
     const {
       modalIsOpen,
-      closeModal,
       queja: {
         titulo,
         descripcion,
         fecha,
-        imagen,
         apartamento,
       },
-      queja,
     } = this.props;
 
     const {
@@ -220,8 +207,10 @@ ModalSolucion.propTypes = {
       seconds: PropTypes.number,
       nanoseconds: PropTypes.number,
     }),
+    apartamento: PropTypes.number,
     imagen: PropTypes.string,
   }),
+  solucionarQueja: PropTypes.func.isRequired,
 };
 
 ModalSolucion.defaultProps = {
