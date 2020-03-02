@@ -4,12 +4,19 @@ import _ from 'lodash';
 import CardQueja from '../card-queja/CardQueja';
 import { firestore } from '../../firebase/firebase.utils';
 import { notiError } from '../../utils/notifications';
+import ModalSolucion from '../modal-solucion/ModalSolucion';
+
+const defState = {
+  queja: {},
+  modalIsOpen: false,
+};
 
 class Quejas extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      ...defState,
       quejas: {},
       loading: true,
     };
@@ -32,8 +39,32 @@ class Quejas extends React.Component {
     this.setState({ loading: false });
   }
 
+  openModal = (queja) => {
+    this.setState({ queja, modalIsOpen: true });
+  }
+
+  closeModal = () => {
+    this.setState((state) => ({ ...state, ...defState }));
+  }
+
+  solucionarQueja = (id) => {
+    this.setState((state) => {
+      const queja = state.quejas[id];
+      return (
+        {
+          quejas: { ...state.quejas, [id]: { ...queja, solucionado: true } },
+        }
+      );
+    });
+  }
+
   render() {
-    const { quejas, loading } = this.state;
+    const {
+      quejas,
+      loading,
+      queja,
+      modalIsOpen,
+    } = this.state;
 
     return (
       <div>
@@ -46,18 +77,24 @@ class Quejas extends React.Component {
             md: 3,
             lg: 4,
             xl: 4,
-            xxl: 3,
+            xxl: 5,
           }}
-          dataSource={_.toArray(quejas)}
+          dataSource={_.toArray(_.filter(quejas, { solucionado: false }))}
           renderItem={(item) => (
             <List.Item>
-              <CardQueja queja={item} />
+              <CardQueja queja={item} openModal={this.openModal} />
             </List.Item>
           )}
+        />
+        <ModalSolucion
+          modalIsOpen={modalIsOpen}
+          closeModal={this.closeModal}
+          queja={queja}
+          solucionarQueja={this.solucionarQueja}
         />
       </div>
     );
   }
-};
+}
 
 export default Quejas;

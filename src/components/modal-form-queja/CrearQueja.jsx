@@ -132,10 +132,11 @@ class CrearQueja extends React.Component {
   };
 
   validate = () => {
+    const { imageUrl } = this.state;
     this.formRef.current
       .validateFields()
       .then((values) => {
-        this.handleSubmit(values);
+        imageUrl && this.handleSubmit(values);
       })
       .catch(() => null);
   }
