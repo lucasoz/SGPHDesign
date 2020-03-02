@@ -59,7 +59,7 @@ class ModalSolucion extends React.Component {
   handleSubmit = async ({
     multa,
     valor,
-    fechaPenalizacion: { _d },
+    fechaPenalizacion,
   }) => {
     this.setState({ loading: true });
     const { queja: { id } } = this.props;
@@ -73,6 +73,7 @@ class ModalSolucion extends React.Component {
           fechaMulta: fechaHoy,
         });
       } else {
+        const { _d } = fechaPenalizacion;
         await firestore.collection('penalizaciones').add({
           queja,
           fechaPenalizacion: fechaHoy,
