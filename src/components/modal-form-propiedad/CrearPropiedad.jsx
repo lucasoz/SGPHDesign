@@ -54,7 +54,7 @@ class CrearPropiedad extends React.Component {
     try {
       await firestore.collection('propiedades').add({
         apartamento,
-        habitante: firestore.collection('usuario').doc(habitante),
+        habitante: firestore.collection('usuarios').doc(habitante),
       });
       notiSuccess('La propiedad se creó.');
     } catch (error) {

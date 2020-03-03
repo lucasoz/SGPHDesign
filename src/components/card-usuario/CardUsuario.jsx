@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import { firestore } from '../../firebase/firebase.utils';
+import { notiError } from '../../utils/notifications';
 
 const { Meta } = Card;
 const { Text } = Typography;
@@ -30,12 +31,11 @@ class CardUsuario extends React.Component {
     this.getAsyncData(usuario);
   }
 
-  getAsyncData = async ({ apto }) => {
-    firestore.collection('propiedades');
+  getAsyncData = async (usuario) => {
+    console.log(usuario);
     
-    //this.setState({ apartamento });
-  }
 
+  }
 
   render() {
     const {
