@@ -56,22 +56,26 @@ class ModalSolucion extends React.Component {
     const queja = firestore.collection('quejas').doc(id);
     const { _d: fechaHoy } = moment();
     try {
+      let solucion;
+      let tipoSolucion;
       if (multa) {
-        await firestore.collection('multas').add({
-          queja,
+        solucion = await firestore.collection('multas').add({
           valor,
           fechaMulta: fechaHoy,
         });
+        tipoSolucion = 'multa';
       } else {
         const { _d } = fechaPenalizacion;
-        await firestore.collection('penalizaciones').add({
-          queja,
+        solucion = await firestore.collection('penalizaciones').add({
           fechaPenalizacion: fechaHoy,
           fechaFinPenalizacion: _d,
         });
+        tipoSolucion = 'penalizacion';
       }
       await queja.update({
         solucionado: true,
+        tipoSolucion,
+        solucion,
       });
       solucionarQueja(id);
       notiSuccess('La queja ha sido solucionada.');

@@ -34,6 +34,8 @@ class CrearQueja extends React.Component {
       loading: false,
       loadingImage: false,
       isLoadingImage: false,
+      imageUrl: null,
+      percent: 0,
     };
   }
 
@@ -82,7 +84,7 @@ class CrearQueja extends React.Component {
     this.formRef.current.resetFields();
     const { setModalVisible } = this.props;
     setModalVisible(false, 'queja');
-    this.setState({ imageUrl: null });
+    this.setState({ imageUrl: null, isLoadingImage: false });
   }
 
   handleSubmit = (data) => {
@@ -115,15 +117,21 @@ class CrearQueja extends React.Component {
   }) => {
     this.setState({ loading: true });
     try {
-      await firestore.collection('quejas').add({
-        apto: firestore.collection('propiedades').doc(apto),
-        titulo,
-        descripcion,
-        fecha: _d,
-        solucionado: false,
-        imagen: downloadURL,
-      });
-      notiSuccess('La queja ha sido reportada.');
+      const apartamento = await firestore.collection('propiedades').doc(apto).get();
+      if (apartamento.exists) {
+        const usuario = await apartamento.data();
+        await firestore.collection('quejas').add({
+          usuario: usuario.habitante,
+          titulo,
+          descripcion,
+          fecha: _d,
+          solucionado: false,
+          imagen: downloadURL,
+        });
+        notiSuccess('La queja ha sido reportada.');
+      } else {
+        notiError('La propiedad no tiene inquilino');
+      }
     } catch (error) {
       notiError(error.message);
     }
