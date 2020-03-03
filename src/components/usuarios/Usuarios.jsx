@@ -4,6 +4,7 @@ import _ from 'lodash';
 import CardUsuario from '../card-usuario/CardUsuario';
 import { firestore } from '../../firebase/firebase.utils';
 import { notiError } from '../../utils/notifications';
+import ModalHistorial from '../modal-historial/ModalHistorial';
 
 class Usuarios extends React.Component {
   constructor(props) {

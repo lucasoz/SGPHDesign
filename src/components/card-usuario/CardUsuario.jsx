@@ -21,7 +21,6 @@ class CardUsuario extends React.Component {
     super();
 
     this.state = {
-      loading: true,
       apartamento: null,
     };
   }
@@ -32,9 +31,14 @@ class CardUsuario extends React.Component {
   }
 
   getAsyncData = async (usuario) => {
-    console.log(usuario);
-    
-
+    await firestore.collection('propiedades')
+      .where('habitante', '==', firestore.collection('usuarios').doc(usuario.id))
+      .onSnapshot(
+        (snapshot) => snapshot.forEach((propiedadHab) => {
+          this.setState({ apartamento: propiedadHab.data().apartamento });
+        }),
+        (error) => notiError(error),
+      );
   }
 
   render() {
@@ -67,8 +71,6 @@ class CardUsuario extends React.Component {
         />
         <Divider dashed />
         <Text strong>{moment.unix(fechaNacimiento.seconds).locale('es').format('MMMM DD YYYY')}</Text>
-        <Divider dashed />
-        historial de habitabilidad
       </Card>
     );
   }

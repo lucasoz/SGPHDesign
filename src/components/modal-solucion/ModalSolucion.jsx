@@ -211,7 +211,7 @@ ModalSolucion.propTypes = {
       seconds: PropTypes.number,
       nanoseconds: PropTypes.number,
     }),
-    apartamento: PropTypes.number,
+    apartamento: PropTypes.string,
     imagen: PropTypes.string,
   }),
   solucionarQueja: PropTypes.func.isRequired,

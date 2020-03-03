@@ -83,8 +83,8 @@ class CrearQueja extends React.Component {
   closeModal = () => {
     this.formRef.current.resetFields();
     const { setModalVisible } = this.props;
-    setModalVisible(false, 'queja');
     this.setState({ imageUrl: null, isLoadingImage: false });
+    setModalVisible(false, 'queja');
   }
 
   handleSubmit = (data) => {
@@ -122,6 +122,7 @@ class CrearQueja extends React.Component {
         const usuario = await apartamento.data();
         await firestore.collection('quejas').add({
           usuario: usuario.habitante,
+          apto: firestore.collection('propiedades').doc(apto),
           titulo,
           descripcion,
           fecha: _d,
