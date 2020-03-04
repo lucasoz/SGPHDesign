@@ -26,18 +26,25 @@ class Quejas extends React.Component {
     this.getCollection();
   }
 
+  componentWillUnmount() {
+    this.unsuscribe();
+  }
+
   getCollection = async () => {
-    firestore.collection('quejas').where('solucionado', '==', false)
+    const unsuscribe = firestore.collection('quejas').where('solucionado', '==', false)
       .onSnapshot(
         (snapshot) => snapshot.forEach((queja) => {
           this.setState((state) => ({
             quejas: { ...state.quejas, [queja.id]: { ...queja.data(), id: queja.id } },
           }));
         }),
-        (error) => notiError(error),
+        (error) => notiError(error.message),
       );
+    this.unsuscribe = unsuscribe;
     this.setState({ loading: false });
   }
+
+
 
   openModal = (queja) => {
     this.setState({ queja, modalIsOpen: true });

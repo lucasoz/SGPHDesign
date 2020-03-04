@@ -34,11 +34,17 @@ class CrearQueja extends React.Component {
       loading: false,
       loadingImage: false,
       isLoadingImage: false,
+      imageUrl: null,
+      percent: 0,
     };
   }
 
   componentDidMount() {
     this.getPropiedades();
+  }
+
+  componentWillUnmount() {
+    this.unsuscribe();
   }
 
   getBase64 = (img, callback) => {
@@ -63,7 +69,7 @@ class CrearQueja extends React.Component {
   }
 
   getPropiedades = async () => {
-    firestore.collection('propiedades')
+    const unsuscribe = firestore.collection('propiedades')
       .onSnapshot(
         (snapshot) => snapshot.forEach((propiedad) => {
           this.setState((state) => ({
@@ -73,16 +79,17 @@ class CrearQueja extends React.Component {
             },
           }));
         }),
-        (error) => notiError(error),
+        (error) => notiError(error.message),
       );
+    this.unsuscribe = unsuscribe;
     this.setState({ loading: false });
   }
 
   closeModal = () => {
     this.formRef.current.resetFields();
     const { setModalVisible } = this.props;
+    this.setState({ imageUrl: null, isLoadingImage: false });
     setModalVisible(false, 'queja');
-    this.setState({ imageUrl: null });
   }
 
   handleSubmit = (data) => {
@@ -115,15 +122,22 @@ class CrearQueja extends React.Component {
   }) => {
     this.setState({ loading: true });
     try {
-      await firestore.collection('quejas').add({
-        apto: firestore.collection('propiedades').doc(apto),
-        titulo,
-        descripcion,
-        fecha: _d,
-        solucionado: false,
-        imagen: downloadURL,
-      });
-      notiSuccess('La queja ha sido reportada.');
+      const apartamento = await firestore.collection('propiedades').doc(apto).get();
+      if (apartamento.exists) {
+        const usuario = await apartamento.data();
+        await firestore.collection('quejas').add({
+          usuario: usuario.habitante,
+          apto: firestore.collection('propiedades').doc(apto),
+          titulo,
+          descripcion,
+          fecha: _d,
+          solucionado: false,
+          imagen: downloadURL,
+        });
+        notiSuccess('La queja ha sido reportada.');
+      } else {
+        notiError('La propiedad no tiene inquilino');
+      }
     } catch (error) {
       notiError(error.message);
     }

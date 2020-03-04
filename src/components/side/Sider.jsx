@@ -9,6 +9,7 @@ import {
   HomeOutlined,
   PlusCircleOutlined,
   WarningOutlined,
+  UserAddOutlined,
   UserOutlined,
   BuildOutlined,
 } from '@ant-design/icons';
@@ -17,6 +18,7 @@ import CrearQueja from '../modal-form-queja/CrearQueja';
 import CrearUsuario from '../modal-form-usuario/CrearUsuario';
 import CrearPropiedad from '../modal-form-propiedad/CrearPropiedad';
 import Quejas from '../quejas/Quejas';
+import Usuarios from '../usuarios/Usuarios';
 
 const { Header, Content } = Layout;
 
@@ -85,7 +87,7 @@ class SiderContainer extends React.Component {
               Listar Quejas
             </Menu.Item>
             <Menu.Item key="crearUsuario">
-              <UserOutlined />
+              <UserAddOutlined />
               {' '}
               Crear Usuario
             </Menu.Item>
@@ -93,6 +95,11 @@ class SiderContainer extends React.Component {
               <BuildOutlined />
               {' '}
               Crear Propiedad
+            </Menu.Item>
+            <Menu.Item key="listarUsuarios" onClick={() => history.push('/usuarios')}>
+              <UserOutlined />
+              {' '}
+              Listar Usuarios
             </Menu.Item>
           </Menu>
         </Header>
@@ -106,6 +113,7 @@ class SiderContainer extends React.Component {
           <Switch>
             <Route exact path="/" component={ListaNoticias} />
             <Route exact path="/quejas" component={Quejas} />
+            <Route exact path="/usuarios" component={Usuarios} />
           </Switch>
         </Content>
       </Layout>
