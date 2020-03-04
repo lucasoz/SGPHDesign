@@ -27,18 +27,24 @@ class CrearPropiedad extends React.Component {
     this.getUsuarios();
   }
 
+  componentWillUnmount() {
+    this.unsuscribe();
+  }
+
   getUsuarios = async () => {
-    firestore.collection('usuarios')
+    const unsuscribe = firestore.collection('usuarios')
       .onSnapshot(
         (snapshot) => snapshot.forEach((usuario) => {
           this.setState((state) => ({
             usuarios: { ...state.usuarios, [usuario.id]: { ...usuario.data(), id: usuario.id } },
           }));
         }),
-        (error) => notiError(error),
+        (error) => notiError(error.message),
       );
+    this.unsuscribe = unsuscribe;
     this.setState({ loading: false });
   }
+
 
   closeModal = () => {
     this.formRef.current.resetFields();

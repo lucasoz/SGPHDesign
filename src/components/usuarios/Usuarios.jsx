@@ -1,10 +1,9 @@
 import React from 'react';
-import { List } from 'antd';
+import { List, Modal } from 'antd';
 import _ from 'lodash';
 import CardUsuario from '../card-usuario/CardUsuario';
 import { firestore } from '../../firebase/firebase.utils';
 import { notiError } from '../../utils/notifications';
-import ModalHistorial from '../modal-historial/ModalHistorial';
 
 class Usuarios extends React.Component {
   constructor(props) {
@@ -20,16 +19,21 @@ class Usuarios extends React.Component {
     this.getCollection();
   }
 
+  componentWillUnmount() {
+    this.unsuscribe();
+  }
+
   getCollection = async () => {
-    firestore.collection('usuarios')
+    const unsuscribe = firestore.collection('usuarios')
       .onSnapshot(
         (snapshot) => snapshot.forEach((usuario) => {
           this.setState((state) => ({
             usuarios: { ...state.usuarios, [usuario.id]: { ...usuario.data(), id: usuario.id } },
           }));
         }),
-        (error) => notiError(error),
+        (error) => notiError(error.message),
       );
+    this.unsuscribe = unsuscribe;
     this.setState({ loading: false });
   }
 

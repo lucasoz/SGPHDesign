@@ -43,6 +43,10 @@ class CrearQueja extends React.Component {
     this.getPropiedades();
   }
 
+  componentWillUnmount() {
+    this.unsuscribe();
+  }
+
   getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -65,7 +69,7 @@ class CrearQueja extends React.Component {
   }
 
   getPropiedades = async () => {
-    firestore.collection('propiedades')
+    const unsuscribe = firestore.collection('propiedades')
       .onSnapshot(
         (snapshot) => snapshot.forEach((propiedad) => {
           this.setState((state) => ({
@@ -75,8 +79,9 @@ class CrearQueja extends React.Component {
             },
           }));
         }),
-        (error) => notiError(error),
+        (error) => notiError(error.message),
       );
+    this.unsuscribe = unsuscribe;
     this.setState({ loading: false });
   }
 

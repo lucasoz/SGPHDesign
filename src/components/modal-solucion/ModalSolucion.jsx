@@ -73,6 +73,7 @@ class ModalSolucion extends React.Component {
         tipoSolucion = 'penalizacion';
       }
       await queja.update({
+        fechaSolucion: fechaHoy,
         solucionado: true,
         tipoSolucion,
         solucion,
